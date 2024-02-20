@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Language Translator</string>
+    <string name="source">Source</string>
+    <string name="paste">Paste</string>
+    <string name="copy">Copy\n</string>
+    <string name="target">Target</string>
+</resources>
