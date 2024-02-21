@@ -38,7 +38,6 @@ class LanguageTransActivity : AppCompatActivity() {
     private var copyButton: ImageView? = null
     private var pasteButton: ImageView? = null
     private var transLateButton: MaterialButton? = null
-
     private val viewModel: LanguageViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +53,7 @@ class LanguageTransActivity : AppCompatActivity() {
         sourceText = binding.sourceText.findViewById(R.id.sourceText)
         targetText = binding.targetText.findViewById(R.id.targetText)
         transLateButton = binding.translateButton.findViewById(R.id.translateButton)
+
 
         lifecycleScope.launch {
             var loadingDialog: AlertDialog? = null
