@@ -1,6 +1,7 @@
-package com.prafullkumar.languagetranslator
+package com.prafullkumar.languagetranslator.di
 
 import com.google.ai.client.generativeai.GenerativeModel
+import com.prafullkumar.languagetranslator.data.LanguageRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

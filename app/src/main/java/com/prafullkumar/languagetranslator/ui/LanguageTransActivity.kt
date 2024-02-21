@@ -1,18 +1,20 @@
-package com.prafullkumar.languagetranslator
+package com.prafullkumar.languagetranslator.ui
 
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.prafullkumar.languagetranslator.R
 import com.prafullkumar.languagetranslator.databinding.ActivityMainBinding
+import com.prafullkumar.languagetranslator.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -43,13 +45,30 @@ class LanguageTransActivity : AppCompatActivity() {
         transLateButton = binding.translateButton.findViewById(R.id.translateButton)
 
         lifecycleScope.launch {
+            var loadingDialog: AlertDialog? = null
             sourceLang?.text = viewModel.sourceLang
             targetLang?.text = viewModel.targetLang
             viewModel.uiState.collect {
-                sourceText?.setText(it.sourceText)
-                targetText?.text = it.targetText
-                if (targetText?.text?.isEmpty() == true) {
-                    copyButton?.visibility = ImageView.INVISIBLE
+                when (it) {
+                    is Resource.Error -> {
+                        loadingDialog?.dismiss()
+                        MaterialAlertDialogBuilder(this@LanguageTransActivity)
+                            .setTitle("Error")
+                            .setMessage(it.exception.message)
+                            .setPositiveButton("OK") { dialog, which ->
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+                    Resource.Initial -> {  }
+                    Resource.Loading -> {
+                        loadingDialog = loadingDialog()
+                    }
+                    is Resource.Success -> {
+                        loadingDialog?.dismiss()
+                        sourceText?.setText(it.data?.sourceText)
+                        targetText?.text = it.data?.targetText
+                    }
                 }
             }
         }
@@ -93,6 +112,14 @@ class LanguageTransActivity : AppCompatActivity() {
                 dialog.dismiss()
                 language("Hindi")
             }
+            .show()
+    }
+    private fun loadingDialog(): AlertDialog {
+        return MaterialAlertDialogBuilder(this)
+            .setTitle("Loading")
+            .setMessage("Please wait")
+            .setCancelable(false)
+            .setView(R.layout.loading_bar)
             .show()
     }
 }
