@@ -1,6 +1,7 @@
 package com.prafullkumar.languagetranslator.ui
 
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,7 +25,7 @@ class LanguageTransActivity : AppCompatActivity() {
     private var sourceLang: TextView? = null
     private var targetLang: TextView? = null
     private var swapLang: ImageButton? = null
-    private var sourceText: TextInputEditText? = null
+    private var sourceText: EditText? = null
     private var targetText: TextView? = null
     private var copyButton: ImageView? = null
     private var transLateButton: MaterialButton? = null

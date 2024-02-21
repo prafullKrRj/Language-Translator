@@ -92,21 +92,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                   <EditText
+                         android:id="@+id/sourceText"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:enabled="true"
-                        android:orientation="vertical">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/sourceText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clickable="true"
-                            android:enabled="true"
-                            android:gravity="top"
-                            android:hint="@string/source" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="@string/source"
+                        android:padding="10dp"
+                        android:textSize="16sp" />
                     <ImageView
                         android:layout_gravity="bottom|end"
                         android:padding="16dp"
@@ -131,9 +124,9 @@
                 android:layout_height="wrap_content" >
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:padding="16dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/targetText"
                         android:layout_width="match_parent"
@@ -141,7 +134,6 @@
                     <ImageView
                         android:id="@+id/copyButton"
                         android:layout_gravity="bottom|end"
-                        android:padding="16dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/baseline_content_copy_24"
