@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
 import com.prafullkumar.languagetranslator.R
 import com.prafullkumar.languagetranslator.databinding.ActivityMainBinding
 import com.prafullkumar.languagetranslator.utils.Resource
@@ -85,20 +84,21 @@ class LanguageTransActivity : AppCompatActivity() {
             viewModel.targetLang = targetLang?.text.toString()
         }
         binding.sourceLangCard.setOnClickListener {
-            showDialog { sl ->
+            selectionDialog { sl ->
                 sourceLang?.text = sl
                 viewModel.sourceLang = sl
             }
         }
         binding.targetLangCard.setOnClickListener {
-            showDialog { tl ->
+            selectionDialog { tl ->
                 targetLang?.text = tl
                 viewModel.targetLang = tl
             }
         }
     }
 
-    private fun showDialog(language: (String) -> Unit) {
+    private fun selectionDialog(language: (String) -> Unit) {
+
         MaterialAlertDialogBuilder(this)
             .setTitle("Title")
             .setMessage("Message")
@@ -115,6 +115,7 @@ class LanguageTransActivity : AppCompatActivity() {
             }
             .show()
     }
+
     private fun loadingDialog(): AlertDialog {
         return MaterialAlertDialogBuilder(this)
             .setTitle("Loading")
