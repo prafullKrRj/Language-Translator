@@ -1,6 +1,7 @@
 package com.prafullkumar.languagetranslator.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -9,10 +10,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.prafullkumar.languagetranslator.R
+import com.prafullkumar.languagetranslator.adapters.CountryAdapter
 import com.prafullkumar.languagetranslator.databinding.ActivityMainBinding
+import com.prafullkumar.languagetranslator.utils.CountriesList
 import com.prafullkumar.languagetranslator.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -99,9 +104,18 @@ class LanguageTransActivity : AppCompatActivity() {
 
     private fun selectionDialog(language: (String) -> Unit) {
 
+        val countries = CountriesList.languageList
+
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.country_list, null)
+        val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = CountryAdapter(countries) { selectedCountry ->
+            language(selectedCountry)
+        }
+
         MaterialAlertDialogBuilder(this)
-            .setTitle("Title")
-            .setMessage("Message")
+            .setTitle("Countries")
+            .setView(dialogView)
             .setOnDismissListener {
 
             }
