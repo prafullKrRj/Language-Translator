@@ -101,6 +101,7 @@
                         android:padding="10dp"
                         android:textSize="16sp" />
                     <ImageView
+                        android:id="@+id/pasteButton"
                         android:layout_gravity="bottom|end"
                         android:padding="16dp"
                         android:layout_width="wrap_content"

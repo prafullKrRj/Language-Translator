@@ -1,11 +1,15 @@
 package com.prafullkumar.languagetranslator.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +36,7 @@ class LanguageTransActivity : AppCompatActivity() {
     private var sourceText: EditText? = null
     private var targetText: TextView? = null
     private var copyButton: ImageView? = null
+    private var pasteButton: ImageView? = null
     private var transLateButton: MaterialButton? = null
 
     private val viewModel: LanguageViewModel by viewModels()
@@ -45,6 +50,7 @@ class LanguageTransActivity : AppCompatActivity() {
         sourceLang = binding.sourceLang.findViewById(R.id.sourceLang)
         targetLang = binding.targetLang.findViewById(R.id.targetLang)
         copyButton = binding.copyButton.findViewById(R.id.copyButton)
+        pasteButton = binding.pasteButton.findViewById(R.id.pasteButton)
         sourceText = binding.sourceText.findViewById(R.id.sourceText)
         targetText = binding.targetText.findViewById(R.id.targetText)
         transLateButton = binding.translateButton.findViewById(R.id.translateButton)
@@ -100,32 +106,40 @@ class LanguageTransActivity : AppCompatActivity() {
                 viewModel.targetLang = tl
             }
         }
+        binding.copyButton.setOnClickListener {
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("Translated Text", targetText?.text.toString())
+            clipboardManager.setPrimaryClip(clipData)
+            Toast.makeText(this, "Text Copied", Toast.LENGTH_SHORT).show()
+        }
+        binding.pasteButton.setOnClickListener {
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = clipboardManager.primaryClip
+            val item = clipData?.getItemAt(0)
+            sourceText?.setText(item?.text)
+        }
     }
 
     private fun selectionDialog(language: (String) -> Unit) {
 
         val countries = CountriesList.languageList
-
+        var selectedLanguage = "English"
         val dialogView = LayoutInflater.from(this).inflate(R.layout.country_list, null)
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = CountryAdapter(countries) { selectedCountry ->
-            language(selectedCountry)
+            selectedLanguage = selectedCountry
         }
-
         MaterialAlertDialogBuilder(this)
             .setTitle("Countries")
             .setView(dialogView)
-            .setOnDismissListener {
-
-            }
+            .setCancelable(false)
             .setPositiveButton("OK") { dialog, which ->
+                language(selectedLanguage)
                 dialog.dismiss()
-                language("English")
             }
             .setNegativeButton("Cancel") { dialog, which ->
                 dialog.dismiss()
-                language("Hindi")
             }
             .show()
     }
@@ -133,7 +147,6 @@ class LanguageTransActivity : AppCompatActivity() {
     private fun loadingDialog(): AlertDialog {
         return MaterialAlertDialogBuilder(this)
             .setTitle("Loading")
-            .setMessage("Please wait")
             .setCancelable(false)
             .setView(R.layout.loading_bar)
             .show()
